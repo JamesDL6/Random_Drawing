@@ -3,13 +3,16 @@
 #include <fstream>
 #include <string>
 #include <windows.h>
+#include <ctype.h>
 
 using namespace std;
-const int Size = 60;
-const int MAX_NUM = 50;
-string name[MAX_NUM];
 
-int read(int x)
+const int Size = 20; //The character limitation of your file name
+const int MAX_NUM = 5; //Change here to set the number of people you want
+const int Name_length = 50; //The character limitation of the data in the file
+string name[Name_length];
+
+int read(int x) //Open your file and debug
 {
 	const int size = Size;
 	char filename[size];
@@ -66,16 +69,46 @@ int read(int x)
 	return count;
 }
 
+void B_SORT(int arr[], int len) //Sort the time seeds
+{
+	int i, j;  int temp;
+	for (i = 0; i < len - 1; i++)
+		for (j = 0; j < len - 1 - i; j++)
+			if (arr[j] > arr[j + 1])
+			{
+				temp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = temp;
+			}
+}
+
 int main()
 {
 	int r_count = read(0);
 	cout << "Random drawing is processing......\n";
 	srand(time(0));
-	int(n) = (rand() % r_count);
+	int m[MAX_NUM];
+	int i = 0;
+	cout << "Time seeds creating:\n";
+	for (int i =0;i < MAX_NUM; i++) //Creat time seeds
+	{
+		m[i] = (rand() % r_count);
+		int a = 0;
+		for (a=0; a < i; a++)
+		{
+			if (m[i] == m[a])
+			{
+				m[i] = (rand() % r_count);
+				a = 0;
+			}
+		}
+	}
+	B_SORT(m, MAX_NUM);
+
 	Sleep(5 * 1000);
-
-	cout << "\aGod's kiss falls on " << name[n] << ", CONGRATULATIONS!\n";
-
-	system("pause");
+	cout << "\a\nGod's kiss falls on:\n";
+	for (int i = 0; i < MAX_NUM; i++)
+		cout << name[m[i]] << endl;
+	cout << "CONGRATULATIONS!\n";
 	return 0;
 }
